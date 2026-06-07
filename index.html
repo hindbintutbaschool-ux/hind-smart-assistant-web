@@ -429,37 +429,23 @@ body{
 
 </section>
 
-<script>
-function openWhatsApp(){
-  window.open("https://wa.me/", "_blank");
-}
-
-function openBot(text){
-  if(window.voiceflow && window.voiceflow.chat){
-    window.voiceflow.chat.open();
-  }
-}
-
+<script type="text/javascript">
 (function(d, t) {
   var v = d.createElement(t);
   var s = d.getElementsByTagName(t)[0];
 
   v.onload = function() {
     window.voiceflow.chat.load({
-      verify: { projectID: "6a22d5ece40bb7eceaa0c3da" },
-      url: "https://general-runtime.voiceflow.com",
-      versionID: "production",
-      assistant: {
-        title: "مُجيب"
+      verify: {
+        projectID: "6a22d5ece40bb7eceaa0c3da"
       },
-      autostart: true
+      url: "https://general-runtime.voiceflow.com",
+      versionID: "production"
     });
 
     setTimeout(function(){
-      if(window.voiceflow && window.voiceflow.chat){
-        window.voiceflow.chat.open();
-      }
-    }, 1500);
+      window.voiceflow.chat.open();
+    }, 2000);
   };
 
   v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
