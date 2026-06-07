@@ -8,8 +8,6 @@
 <style>
 :root{
   --maroon:#7b0826;
-  --maroon2:#9b1238;
-  --soft:#fff7f5;
   --text:#2b2b2b;
 }
 
@@ -45,11 +43,10 @@ body{
   z-index:3;
 }
 
-.logo .mark{
-  color:var(--maroon);
-  font-size:58px;
-  line-height:1;
-  font-weight:bold;
+.logo img{
+  width:105px;
+  display:block;
+  margin:0 auto 8px;
 }
 
 .title{
@@ -60,7 +57,6 @@ body{
   line-height:1.45;
   margin:10px auto 0;
   max-width:900px;
-  text-shadow:0 2px 10px rgba(255,255,255,.7);
 }
 
 .subtitle{
@@ -82,13 +78,11 @@ body{
 .intro h2{
   color:var(--maroon);
   font-size:30px;
-  margin-bottom:25px;
 }
 
 .intro p{
   font-size:21px;
   line-height:2.1;
-  margin:0;
 }
 
 .badge{
@@ -100,7 +94,6 @@ body{
   font-size:23px;
   font-weight:bold;
   display:inline-block;
-  box-shadow:0 10px 25px rgba(123,8,38,.25);
 }
 
 .hub{
@@ -143,30 +136,37 @@ body{
   font-weight:bold;
 }
 
-#voiceflow-chat{
-  width:100%;
-  height:310px;
-  background:white;
-}
-
 .bot-fallback{
   padding:30px 20px;
   text-align:center;
 }
 
-.bot-fallback .robot{
+.robot{
   font-size:75px;
 }
 
 .bot-fallback h3{
   color:var(--maroon);
-  font-size:27px;
+  font-size:31px;
   margin:10px 0;
 }
 
 .bot-fallback p{
-  font-size:16px;
-  line-height:1.7;
+  font-size:18px;
+  line-height:1.8;
+}
+
+.chat-launcher{
+  display:inline-block;
+  margin-top:18px;
+  background:var(--maroon);
+  color:#fff;
+  padding:14px 28px;
+  border-radius:35px;
+  font-size:20px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 10px 20px rgba(0,0,0,.2);
 }
 
 .service{
@@ -186,13 +186,7 @@ body{
   font-weight:bold;
   font-size:17px;
   cursor:pointer;
-  transition:.25s;
   z-index:4;
-}
-
-.service:hover{
-  transform:scale(1.08);
-  background:#fff4f7;
 }
 
 .service i{
@@ -207,14 +201,6 @@ body{
 .bottom{bottom:0;left:50%;transform:translateX(-50%)}
 .left-bottom{bottom:115px;left:0}
 .left-top{top:115px;left:0}
-
-.top:hover{transform:translateX(-50%) scale(1.08)}
-.bottom:hover{transform:translateX(-50%) scale(1.08)}
-
-.whatsapp i{
-  color:var(--maroon);
-  font-size:42px;
-}
 
 .footer{
   position:absolute;
@@ -249,72 +235,21 @@ body{
   font-weight:bold;
 }
 
+/* إخفاء أيقونة Voiceflow السفلية */
+.vfrc-launcher{
+  display:none !important;
+}
+
 @media(max-width:1100px){
-  .hero{
-    padding:25px 20px 180px;
-  }
-
-  .logo{
-    position:relative;
-    top:auto;
-    left:auto;
-    margin:auto;
-  }
-
-  .title{
-    font-size:30px;
-  }
-
-  .subtitle{
-    font-size:20px;
-  }
-
-  .intro{
-    position:relative;
-    top:auto;
-    right:auto;
-    width:auto;
-    text-align:center;
-    margin:35px auto;
-  }
-
-  .hub{
-    width:360px;
-    height:auto;
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-    align-items:center;
-    margin-top:20px;
-  }
-
+  .hero{padding:25px 20px 180px}
+  .logo{position:relative;top:auto;left:auto;margin:auto}
+  .title{font-size:30px}
+  .intro{position:relative;top:auto;right:auto;width:auto;text-align:center;margin:35px auto}
+  .hub{width:360px;height:auto;display:flex;flex-direction:column;gap:14px;align-items:center}
   .orbit{display:none}
-
-  .bot-frame{
-    position:relative;
-    top:auto;
-    left:auto;
-    transform:none;
-    order:1;
-  }
-
-  .service{
-    position:relative;
-    inset:auto;
-    transform:none !important;
-    order:2;
-  }
-
-  .footer{
-    position:relative;
-    flex-direction:column;
-    gap:10px;
-  }
-
-  .footer .item{
-    border-left:none;
-    padding-left:0;
-  }
+  .bot-frame,.service{position:relative;inset:auto;transform:none!important}
+  .footer{position:relative;flex-direction:column;gap:10px}
+  .footer .item{border-left:none;padding-left:0}
 }
 </style>
 </head>
@@ -324,7 +259,7 @@ body{
 <section class="hero">
 
   <div class="logo">
-    <div class="mark"></div>
+    <img src="qatar-logo.png" alt="شعار دولة قطر">
     <strong>وزارة التربية والتعليم والتعليم العالي</strong><br>
     Ministry of Education and Higher Education<br>
     State of Qatar - دولة قطر
@@ -348,69 +283,30 @@ body{
   </aside>
 
   <main class="hub">
-
     <div class="orbit"></div>
 
-    <div class="service top" onclick="openBot()">
-      <i>📢</i>
-      الإعلانات
+    <div class="service top" onclick="openBot()"><i>📢</i>الإعلانات</div>
+    <div class="service right-top" onclick="openBot()"><i>📅</i>جدول الحصص</div>
+    <div class="service right-bottom" onclick="openBot()"><i>🎧</i>تواصل مع المدرسة</div>
+    <div class="service bottom" onclick="openBot()"><i>☏</i>مُجيب واتساب</div>
+    <div class="service left-bottom" onclick="openBot()"><i>📊</i>التقرير الأكاديمي<br>والسلوكي</div>
+    <div class="service left-top" onclick="openBot()"><i>✉️</i>الرسالة<br>الأسبوعية</div>
+
+    <div class="bot-frame" onclick="openBot()">
+      <div class="bot-head">مُجيب</div>
+      <div class="bot-fallback">
+        <div class="robot">🤖</div>
+        <h3>اسأل منصة مُجيب</h3>
+        <p>اضغطي هنا لفتح المساعد الذكي وطرح سؤالك.</p>
+        <div class="chat-launcher">💬 اسأل منصة مُجيب</div>
+      </div>
     </div>
-
-    <div class="service right-top" onclick="openBot()">
-      <i>📅</i>
-      جدول الحصص
-    </div>
-
-    <div class="service right-bottom" onclick="openBot()">
-      <i>🎧</i>
-      تواصل مع المدرسة
-    </div>
-
-    <div class="service bottom whatsapp" onclick="openBot()">
-      <i>☏</i>
-      مُجيب واتساب
-    </div>
-
-    <div class="service left-bottom" onclick="openBot()">
-      <i>📊</i>
-      التقرير الأكاديمي<br>والسلوكي
-    </div>
-
-    <div class="service left-top" onclick="openBot()">
-      <i>✉️</i>
-      الرسالة<br>الأسبوعية
-    </div>
-
-<div class="bot-frame" onclick="openBot()">
-  <div class="bot-head">مُجيب</div>
-
-  <div id="voiceflow-chat">
-    <div class="bot-fallback">
-      <div class="robot">🤖</div>
-      <h3>اسأل منصة مُجيب</h3>
-      <p>اضغطي هنا لفتح المساعد الذكي وطرح سؤالك.</p>
-      <button class="ask-btn">ابدأ المحادثة</button>
-    </div>
-  </div>
-</div>
-
   </main>
 
   <footer class="footer">
-    <div class="item">
-      التصميم التربوي والإشراف العام:<br>
-      <span>إيناس محمود العوضي</span>
-    </div>
-
-    <div class="item">
-      التطوير البرمجي:<br>
-      <span>غادة الحسيني</span>
-    </div>
-
-    <div class="item">
-      الرؤية:<br>
-      <span>متعلم ريادي لتنمية مستدامة</span>
-    </div>
+    <div class="item">التصميم التربوي والإشراف العام:<br><span>إيناس محمود العوضي</span></div>
+    <div class="item">التطوير البرمجي:<br><span>غادة الحسيني</span></div>
+    <div class="item">الرؤية:<br><span>متعلم ريادي لتنمية مستدامة</span></div>
   </footer>
 
 </section>
@@ -419,6 +315,8 @@ body{
 function openBot(){
   if(window.voiceflow && window.voiceflow.chat){
     window.voiceflow.chat.open();
+  }else{
+    alert("جاري تحميل منصة مُجيب، يرجى المحاولة بعد لحظات.");
   }
 }
 
@@ -434,10 +332,6 @@ function openBot(){
         url: "https://runtime-api.voiceflow.com"
       }
     });
-
-    setTimeout(function(){
-      openBot();
-    }, 1500);
   };
 
   v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
