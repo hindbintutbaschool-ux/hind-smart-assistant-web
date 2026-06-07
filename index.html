@@ -337,7 +337,7 @@ body{
 <section class="hero">
 
   <div class="logo">
-    <div class="mark">⚔️🌴</div>
+    <div class="mark"></div>
     <strong>وزارة التربية والتعليم والتعليم العالي</strong><br>
     Ministry of Education and Higher Education<br>
     State of Qatar - دولة قطر
@@ -408,9 +408,7 @@ body{
 
   </main>
 
-  <a class="floating-whatsapp" href="https://wa.me/" target="_blank">
-    ☏ مُجيب واتساب
-  </a>
+
 
   <footer class="footer">
     <div class="item">
@@ -437,28 +435,31 @@ function openWhatsApp(){
 }
 
 function openBot(text){
-  try{
-    if(window.voiceflow && window.voiceflow.chat){
-      window.voiceflow.chat.open();
-    }
-  }catch(e){}
+  if(window.voiceflow && window.voiceflow.chat){
+    window.voiceflow.chat.open();
+  }
 }
 
-/* كود Voiceflow */
 (function(d, t) {
-  var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+  var v = d.createElement(t);
+  var s = d.getElementsByTagName(t)[0];
 
   v.onload = function() {
     window.voiceflow.chat.load({
       verify: { projectID: "6a22d5ece40bb7eceaa0c3da" },
       url: "https://general-runtime.voiceflow.com",
       versionID: "production",
-      render: {
-        mode: "embedded",
-        target: document.getElementById("voiceflow-chat")
+      assistant: {
+        title: "مُجيب"
       },
       autostart: true
     });
+
+    setTimeout(function(){
+      if(window.voiceflow && window.voiceflow.chat){
+        window.voiceflow.chat.open();
+      }
+    }, 1500);
   };
 
   v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
