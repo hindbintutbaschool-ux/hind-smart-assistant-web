@@ -47,7 +47,7 @@ body{
 
 .logo .mark{
   color:var(--maroon);
-  font-size:64px;
+  font-size:58px;
   line-height:1;
   font-weight:bold;
 }
@@ -131,6 +131,7 @@ body{
   overflow:hidden;
   border:10px solid rgba(255,255,255,.7);
   z-index:5;
+  cursor:pointer;
 }
 
 .bot-head{
@@ -248,20 +249,6 @@ body{
   font-weight:bold;
 }
 
-.floating-whatsapp{
-  position:fixed;
-  bottom:125px;
-  left:35px;
-  background:var(--maroon);
-  color:white;
-  text-decoration:none;
-  padding:13px 22px;
-  border-radius:35px;
-  box-shadow:0 12px 25px rgba(0,0,0,.25);
-  font-weight:bold;
-  z-index:20;
-}
-
 @media(max-width:1100px){
   .hero{
     padding:25px 20px 180px;
@@ -337,7 +324,7 @@ body{
 <section class="hero">
 
   <div class="logo">
-    <div class="mark"></div>
+    <div class="mark">⚔️🌴</div>
     <strong>وزارة التربية والتعليم والتعليم العالي</strong><br>
     Ministry of Education and Higher Education<br>
     State of Qatar - دولة قطر
@@ -364,37 +351,37 @@ body{
 
     <div class="orbit"></div>
 
-    <div class="service top" onclick="openBot('الإعلانات')">
+    <div class="service top" onclick="openBot()">
       <i>📢</i>
       الإعلانات
     </div>
 
-    <div class="service right-top" onclick="openBot('جدول الحصص')">
+    <div class="service right-top" onclick="openBot()">
       <i>📅</i>
       جدول الحصص
     </div>
 
-    <div class="service right-bottom" onclick="openBot('تواصل مع المدرسة')">
+    <div class="service right-bottom" onclick="openBot()">
       <i>🎧</i>
       تواصل مع المدرسة
     </div>
 
-    <div class="service bottom whatsapp" onclick="openWhatsApp()">
+    <div class="service bottom whatsapp" onclick="openBot()">
       <i>☏</i>
       مُجيب واتساب
     </div>
 
-    <div class="service left-bottom" onclick="openBot('التقرير الأكاديمي والسلوكي')">
+    <div class="service left-bottom" onclick="openBot()">
       <i>📊</i>
       التقرير الأكاديمي<br>والسلوكي
     </div>
 
-    <div class="service left-top" onclick="openBot('الرسالة الأسبوعية')">
+    <div class="service left-top" onclick="openBot()">
       <i>✉️</i>
       الرسالة<br>الأسبوعية
     </div>
 
-    <div class="bot-frame">
+    <div class="bot-frame" onclick="openBot()">
       <div class="bot-head">مُجيب</div>
 
       <div id="voiceflow-chat">
@@ -407,8 +394,6 @@ body{
     </div>
 
   </main>
-
-
 
   <footer class="footer">
     <div class="item">
@@ -430,22 +415,28 @@ body{
 </section>
 
 <script type="text/javascript">
+function openBot(){
+  if(window.voiceflow && window.voiceflow.chat){
+    window.voiceflow.chat.open();
+  }
+}
+
 (function(d, t) {
   var v = d.createElement(t);
   var s = d.getElementsByTagName(t)[0];
 
   v.onload = function() {
     window.voiceflow.chat.load({
-      verify: {
-        projectID: "6a22d5ece40bb7eceaa0c3da"
-      },
+      verify: { projectID: "6a22d5ece40bb7eceaa0c3da" },
       url: "https://general-runtime.voiceflow.com",
-      versionID: "production"
+      voice: {
+        url: "https://runtime-api.voiceflow.com"
+      }
     });
 
     setTimeout(function(){
-      window.voiceflow.chat.open();
-    }, 2000);
+      openBot();
+    }, 1500);
   };
 
   v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
