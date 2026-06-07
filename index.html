@@ -1,140 +1,348 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>منصة مجيب - مدرسة هند بنت عتبة</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>منصة مجيب</title>
 
 <style>
-
 body{
-margin:0;
-font-family:Tahoma,Arial,sans-serif;
-background:#f7f7f7;
+  margin:0;
+  font-family: Tahoma, Arial, sans-serif;
+  background:#f8f3ee;
+  color:#2b2b2b;
+  overflow-x:hidden;
 }
 
-header{
-background:#6b0f1a;
-color:white;
-padding:25px;
-text-align:center;
+.page{
+  min-height:100vh;
+  position:relative;
+  padding:25px 40px 90px;
+  background:
+    linear-gradient(rgba(255,255,255,.86), rgba(255,255,255,.86)),
+    url("https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1600&q=80");
+  background-size:cover;
+  background-position:center;
 }
 
-.logo{
-width:120px;
-height:120px;
-border-radius:50%;
-background:white;
-margin:auto;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:50px;
-color:#6b0f1a;
-font-weight:bold;
+.curve{
+  position:absolute;
+  inset:auto 0 0 0;
+  height:120px;
+  background:#7b0f2b;
+  border-radius:70% 70% 0 0;
+  z-index:0;
 }
 
-h1{
-margin-top:15px;
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  position:relative;
+  z-index:2;
 }
 
-.hero{
-max-width:1000px;
-margin:auto;
-padding:40px 20px;
-text-align:center;
+.title{
+  text-align:center;
+  flex:1;
 }
 
-.card{
-background:white;
-padding:30px;
-border-radius:20px;
-box-shadow:0 5px 20px rgba(0,0,0,.1);
+.title h1{
+  margin:10px 0 5px;
+  color:#7b0f2b;
+  font-size:42px;
+  line-height:1.4;
 }
 
-.button{
-display:inline-block;
-margin-top:20px;
-padding:12px 25px;
-background:#6b0f1a;
-color:white;
-text-decoration:none;
-border-radius:10px;
-font-weight:bold;
+.title p{
+  font-size:24px;
+  color:#777;
+  margin:0;
 }
 
-footer{
-text-align:center;
-padding:30px;
-color:#777;
+.ministry{
+  width:300px;
+  text-align:center;
+  color:#333;
+  font-size:15px;
 }
 
+.ministry .logo{
+  font-size:60px;
+  color:#7b0f2b;
+}
+
+.intro{
+  position:absolute;
+  right:60px;
+  top:230px;
+  width:330px;
+  z-index:2;
+  text-align:right;
+}
+
+.intro h2{
+  color:#7b0f2b;
+  font-size:28px;
+}
+
+.intro p{
+  font-size:20px;
+  line-height:2;
+}
+
+.badge{
+  margin-top:20px;
+  background:#f2e8e2;
+  color:#7b0f2b;
+  padding:15px;
+  border-radius:14px;
+  font-size:22px;
+  font-weight:bold;
+}
+
+.center{
+  position:relative;
+  width:620px;
+  height:620px;
+  margin:60px auto 0;
+  z-index:2;
+}
+
+.circle{
+  position:absolute;
+  inset:70px;
+  border:2px dashed #b9aaa2;
+  border-radius:50%;
+}
+
+.bot-box{
+  position:absolute;
+  top:160px;
+  left:50%;
+  transform:translateX(-50%);
+  width:300px;
+  height:330px;
+  border-radius:50%;
+  background:#eee8e3;
+  border:18px solid white;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+.robot{
+  font-size:120px;
+}
+
+.chat{
+  background:white;
+  border-radius:18px;
+  padding:12px 18px;
+  margin-top:10px;
+  box-shadow:0 6px 20px rgba(0,0,0,.12);
+  font-size:16px;
+}
+
+.service{
+  position:absolute;
+  width:135px;
+  height:135px;
+  border-radius:50%;
+  background:white;
+  border:2px solid #7b0f2b;
+  box-shadow:0 8px 22px rgba(0,0,0,.12);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  color:#7b0f2b;
+  text-align:center;
+  font-weight:bold;
+  font-size:17px;
+}
+
+.service span{
+  font-size:42px;
+  margin-bottom:8px;
+}
+
+.top{top:0; left:50%; transform:translateX(-50%);}
+.right-top{top:110px; right:0;}
+.right-bottom{bottom:110px; right:0;}
+.bottom{bottom:0; left:50%; transform:translateX(-50%);}
+.left-bottom{bottom:110px; left:0;}
+.left-top{top:110px; left:0;}
+
+.qr{
+  font-size:36px !important;
+}
+
+.credits{
+  position:absolute;
+  bottom:18px;
+  right:70px;
+  z-index:3;
+  background:#7b0f2b;
+  color:white;
+  padding:18px 35px;
+  border-radius:25px;
+  display:flex;
+  gap:35px;
+  font-size:17px;
+  border:2px solid #c9a24d;
+}
+
+@media(max-width:1000px){
+  .header{
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .ministry{
+    width:auto;
+    margin-top:20px;
+  }
+
+  .intro{
+    position:relative;
+    top:auto;
+    right:auto;
+    width:auto;
+    text-align:center;
+    margin:30px auto;
+  }
+
+  .center{
+    width:360px;
+    height:720px;
+  }
+
+  .circle{
+    display:none;
+  }
+
+  .bot-box{
+    position:relative;
+    top:auto;
+    left:auto;
+    transform:none;
+    margin:0 auto 25px;
+  }
+
+  .service{
+    position:relative;
+    inset:auto;
+    transform:none;
+    margin:15px auto;
+  }
+
+  .credits{
+    position:relative;
+    right:auto;
+    bottom:auto;
+    margin:30px auto 0;
+    flex-direction:column;
+    text-align:center;
+    width:80%;
+  }
+
+  .title h1{
+    font-size:28px;
+  }
+}
 </style>
 </head>
 
 <body>
 
-<header>
+<div class="page">
 
-<div class="logo">
-م
+  <div class="header">
+    <div style="width:300px"></div>
+
+    <div class="title">
+      <h1>منصة مُجيب المساعد الذكي<br>لمدرسة هند بنت عُتبة الإعدادية للبنات</h1>
+      <p>خدمات المدرسة بين يديك</p>
+    </div>
+
+    <div class="ministry">
+      <div class="logo">☘</div>
+      <strong>وزارة التربية والتعليم والتعليم العالي</strong><br>
+      Ministry of Education and Higher Education<br>
+      State of Qatar
+    </div>
+  </div>
+
+  <section class="intro">
+    <h2>مرحباً بك في منصة مُجيب</h2>
+    <p>
+      نؤمن أن المعرفة تبدأ بسؤال، وأن التعلم رحلة مستمرة.
+      صُممت منصة مُجيب لتزويدك بإجابات دقيقة ومعلومات موثوقة
+      مستندة إلى المصادر التعليمية المعتمدة في دولة قطر.
+    </p>
+    <div class="badge">إجابة موثوقة... وتعلُّم مستدام.</div>
+  </section>
+
+  <main class="center">
+    <div class="circle"></div>
+
+    <div class="service top">
+      <span>📢</span>
+      الإعلانات
+    </div>
+
+    <div class="service right-top">
+      <span>📅</span>
+      جدول الحصص
+    </div>
+
+    <div class="service right-bottom">
+      <span>🎧</span>
+      تواصل مع المدرسة
+    </div>
+
+    <div class="service bottom">
+      <span class="qr">▦</span>
+      مُجيب واتساب
+    </div>
+
+    <div class="service left-bottom">
+      <span>📊</span>
+      التقرير الأكاديمي والسلوكي
+    </div>
+
+    <div class="service left-top">
+      <span>✉️</span>
+      الرسالة الأسبوعية
+    </div>
+
+    <div class="bot-box">
+      <div class="robot">🤖</div>
+      <div class="chat">
+        مرحباً بك في منصة مُجيب<br>
+        كيف يمكنني مساعدتك اليوم؟
+      </div>
+    </div>
+  </main>
+
+  <div class="credits">
+    <div>
+      التصميم التربوي والإشراف العام:<br>
+      <strong>إيناس محمود العوضي</strong>
+    </div>
+
+    <div>
+      التطوير البرمجي:<br>
+      <strong>غادة الحسيني</strong>
+    </div>
+  </div>
+
+  <div class="curve"></div>
+
 </div>
 
-<h1>منصة مجيب</h1>
-
-<p>
-المساعد الذكي لمدرسة هند بنت عتبة
-</p>
-
-</header>
-
-<section class="hero">
-
-<div class="card">
-
-<h2>مرحباً بك</h2>
-
-<p>
-يمكنك طرح أي سؤال متعلق بالمدرسة أو المناهج أو اللوائح أو الملفات التعليمية.
-</p>
-
-<p>
-اضغط على أيقونة المحادثة أسفل الصفحة لبدء التفاعل مع المساعد الذكي.
-</p>
-
-<a
-class="button"
-href="https://wa.me/97455614536"
-target="_blank">
-التواصل عبر واتساب
-</a>
-
-</div>
-
-</section>
-
-<footer>
-
-© مدرسة هند بنت عتبة
-
-</footer>
-
-<!-- ضع كود Voiceflow هنا -->
-<script type="text/javascript">
-  (function(d, t) {
-      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-      v.onload = function() {
-        window.voiceflow.chat.load({
-          verify: { projectID: '6a22d5ece40bb7eceaa0c3da' },
-          url: 'https://general-runtime.voiceflow.com',
-          voice: {
-            url: "https://runtime-api.voiceflow.com"
-          }
-        });
-      }
-      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
-  })(document, 'script');
-</script>
 </body>
 </html>
