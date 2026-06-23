@@ -207,35 +207,26 @@ body{
 .left-bottom{bottom:115px;left:0}
 .left-top{top:115px;left:0}
 
-/* 🎁 تحدي مُجيب داخل دائرة الخدمات */
 .challenge{
   position:absolute;
   left:-220px;
   top:240px;
-
   width:190px;
   height:190px;
-
   border-radius:50%;
   background:linear-gradient(135deg,#8a0030,#b3124a);
-
   color:white;
   border:4px solid white;
-
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
-
   font-size:24px;
   font-weight:bold;
-
   box-shadow:0 15px 35px rgba(0,0,0,.25);
-
   cursor:pointer;
   z-index:20;
-
   animation:giftPulse 2s infinite;
 }
 
@@ -287,27 +278,27 @@ body{
   font-weight:bold;
 }
 
-/* إخفاء أيقونة Voiceflow السفلية */
 .vfrc-launcher{
   display:none !important;
 }
+
+/* نافذة التحدي */
 .challenge-modal{
   display:none;
   position:fixed;
   inset:0;
   background:rgba(0,0,0,.55);
   z-index:99999;
-
   align-items:center;
   justify-content:center;
 }
 
 .challenge-box{
-  width:420px;
-  max-width:90%;
+  width:520px;
+  max-width:92%;
   background:white;
   border-radius:25px;
-  padding:35px;
+  padding:32px;
   text-align:center;
   box-shadow:0 20px 50px rgba(0,0,0,.25);
 }
@@ -317,7 +308,8 @@ body{
   margin-bottom:10px;
 }
 
-.level-btn{
+.level-btn,
+.answer-btn{
   width:100%;
   border:none;
   padding:15px;
@@ -326,6 +318,9 @@ body{
   font-size:20px;
   font-weight:bold;
   cursor:pointer;
+}
+
+.level-btn{
   background:#7b0826;
   color:white;
 }
@@ -334,11 +329,36 @@ body{
   background:#9b1238;
 }
 
+.answer-btn{
+  background:white;
+  color:#7b0826;
+  border:2px solid #7b0826;
+}
+
+.answer-btn:hover{
+  background:#7b0826;
+  color:white;
+}
+
 .close-btn{
   float:left;
   cursor:pointer;
   font-size:22px;
 }
+
+#questionTitle{
+  color:#7b0826;
+  font-size:22px;
+  line-height:1.8;
+}
+
+#feedback,
+#scoreBox{
+  font-size:19px;
+  font-weight:bold;
+  color:#7b0826;
+}
+
 @media(max-width:1100px){
   .hero{padding:25px 20px 180px}
   .logo{position:relative;top:auto;left:auto;margin:auto}
@@ -348,8 +368,8 @@ body{
   .orbit{display:none}
   .bot-frame,.service{position:relative;inset:auto;transform:none!important}
   .challenge{
-    width:150px;
-    height:150px;
+    width:160px;
+    height:160px;
     order:-1;
   }
   .footer{position:relative;flex-direction:column;gap:10px}
@@ -421,7 +441,44 @@ body{
 
 </section>
 
+<div id="challengeModal" class="challenge-modal">
+  <div class="challenge-box">
+
+    <span class="close-btn" onclick="closeChallenge()">✖</span>
+
+    <div id="levelScreen">
+      <h2>🎁 تحدي مُجيب</h2>
+      <p>اختاري مستوى الرياضيات</p>
+
+      <button class="level-btn" onclick="startLevel(1)">🟢 المستوى الأول</button>
+      <button class="level-btn" onclick="startLevel(2)">🟡 المستوى الثاني</button>
+      <button class="level-btn" onclick="startLevel(3)">🔴 المستوى الثالث</button>
+    </div>
+
+    <div id="quizScreen" style="display:none;">
+      <h2 id="questionTitle"></h2>
+      <div id="answersBox"></div>
+      <p id="feedback"></p>
+      <p id="scoreBox"></p>
+    </div>
+
+    <div id="resultScreen" style="display:none;">
+      <h2>🏆 انتهى التحدي</h2>
+      <p id="finalScore"></p>
+      <button class="level-btn" onclick="backToLevels()">العودة للمستويات</button>
+    </div>
+
+  </div>
+</div>
+
 <script type="text/javascript">
+const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzEHkBTnWRQlhv5B6mmSlJ0wV-Jyd7ZSkNYLZzjGylFIj-y0F2sCekI8Fl64YBsNgqmfQ/exec";
+
+let allQuestions = [];
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+
 function openBot(){
   if(window.voiceflow && window.voiceflow.chat){
     window.voiceflow.chat.open();
@@ -432,10 +489,100 @@ function openBot(){
 
 function openGiftChallenge() {
   document.getElementById("challengeModal").style.display = "flex";
+  document.getElementById("levelScreen").style.display = "block";
+  document.getElementById("quizScreen").style.display = "none";
+  document.getElementById("resultScreen").style.display = "none";
 }
 
 function closeChallenge() {
   document.getElementById("challengeModal").style.display = "none";
+}
+
+async function loadQuestions() {
+  try{
+    const response = await fetch(SHEET_API_URL);
+    allQuestions = await response.json();
+  }catch(error){
+    alert("تعذر تحميل الأسئلة. تأكدي من إعدادات نشر Google Apps Script.");
+    console.error(error);
+  }
+}
+
+async function startLevel(level){
+  score = 0;
+  currentIndex = 0;
+
+  if(allQuestions.length === 0){
+    await loadQuestions();
+  }
+
+  currentQuestions = allQuestions.filter(q => Number(q.level) === Number(level));
+
+  if(currentQuestions.length === 0){
+    alert("لا توجد أسئلة لهذا المستوى حالياً.");
+    return;
+  }
+
+  document.getElementById("levelScreen").style.display = "none";
+  document.getElementById("quizScreen").style.display = "block";
+  document.getElementById("resultScreen").style.display = "none";
+
+  showQuestion();
+}
+
+function showQuestion(){
+  const q = currentQuestions[currentIndex];
+
+  document.getElementById("questionTitle").innerHTML =
+    "السؤال " + (currentIndex + 1) + " من " + currentQuestions.length + "<br><br>" + q.question;
+
+  const answersBox = document.getElementById("answersBox");
+  answersBox.innerHTML = "";
+
+  [q.option1, q.option2, q.option3, q.option4].forEach(option => {
+    const btn = document.createElement("button");
+    btn.className = "answer-btn";
+    btn.innerText = option;
+    btn.onclick = () => checkAnswer(option);
+    answersBox.appendChild(btn);
+  });
+
+  document.getElementById("feedback").innerText = "";
+  document.getElementById("scoreBox").innerText = "النقاط: " + score;
+}
+
+function checkAnswer(selected){
+  const correct = String(currentQuestions[currentIndex].correct).trim();
+
+  if(String(selected).trim() === correct){
+    score += 10;
+    document.getElementById("feedback").innerText = "✅ إجابة صحيحة +10";
+  }else{
+    document.getElementById("feedback").innerText = "❌ الإجابة الصحيحة: " + correct;
+  }
+
+  setTimeout(() => {
+    currentIndex++;
+
+    if(currentIndex < currentQuestions.length){
+      showQuestion();
+    }else{
+      showResult();
+    }
+  }, 1200);
+}
+
+function showResult(){
+  document.getElementById("quizScreen").style.display = "none";
+  document.getElementById("resultScreen").style.display = "block";
+
+  document.getElementById("finalScore").innerHTML =
+    "مجموع نقاطك: <strong>" + score + "</strong> من " + (currentQuestions.length * 10);
+}
+
+function backToLevels(){
+  document.getElementById("resultScreen").style.display = "none";
+  document.getElementById("levelScreen").style.display = "block";
 }
 
 (function(d, t) {
@@ -456,48 +603,7 @@ function closeChallenge() {
   v.type = "text/javascript";
   s.parentNode.insertBefore(v, s);
 })(document, "script");
-  function startLevel(level){
-
-  if(level===1){
-    alert("المستوى الأول - رياضيات الصفوف الأساسية");
-  }
-
-  if(level===2){
-    alert("المستوى الثاني - عمليات حسابية متوسطة");
-  }
-
-  if(level===3){
-    alert("المستوى الثالث - تحدي الرياضيات المتقدم");
-  }
-
-}
 </script>
-<!-- نافذة التحدي -->
 
-<div id="challengeModal" class="challenge-modal">
-
-  <div class="challenge-box">
-
-    <span class="close-btn" onclick="closeChallenge()">✖</span>
-
-    <h2>🎁 تحدي مُجيب</h2>
-
-    <p>اختري المستوى المناسب وابدئي التحدي</p>
-
-    <button class="level-btn" onclick="startLevel(1)">
-      🟢 المستوى الأول
-    </button>
-
-    <button class="level-btn" onclick="startLevel(2)">
-      🟡 المستوى الثاني
-    </button>
-
-    <button class="level-btn" onclick="startLevel(3)">
-      🔴 المستوى الثالث
-    </button>
-
-  </div>
-
-</div>
 </body>
 </html>
