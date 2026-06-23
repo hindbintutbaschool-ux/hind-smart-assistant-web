@@ -291,7 +291,54 @@ body{
 .vfrc-launcher{
   display:none !important;
 }
+.challenge-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:99999;
 
+  align-items:center;
+  justify-content:center;
+}
+
+.challenge-box{
+  width:420px;
+  max-width:90%;
+  background:white;
+  border-radius:25px;
+  padding:35px;
+  text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+
+.challenge-box h2{
+  color:#7b0826;
+  margin-bottom:10px;
+}
+
+.level-btn{
+  width:100%;
+  border:none;
+  padding:15px;
+  margin-top:12px;
+  border-radius:12px;
+  font-size:20px;
+  font-weight:bold;
+  cursor:pointer;
+  background:#7b0826;
+  color:white;
+}
+
+.level-btn:hover{
+  background:#9b1238;
+}
+
+.close-btn{
+  float:left;
+  cursor:pointer;
+  font-size:22px;
+}
 @media(max-width:1100px){
   .hero{padding:25px 20px 180px}
   .logo{position:relative;top:auto;left:auto;margin:auto}
@@ -384,7 +431,11 @@ function openBot(){
 }
 
 function openGiftChallenge() {
-  alert("🎯 تحدي مُجيب قادم قريباً!");
+  document.getElementById("challengeModal").style.display = "flex";
+}
+
+function closeChallenge() {
+  document.getElementById("challengeModal").style.display = "none";
 }
 
 (function(d, t) {
@@ -405,7 +456,48 @@ function openGiftChallenge() {
   v.type = "text/javascript";
   s.parentNode.insertBefore(v, s);
 })(document, "script");
-</script>
+  function startLevel(level){
 
+  if(level===1){
+    alert("المستوى الأول - رياضيات الصفوف الأساسية");
+  }
+
+  if(level===2){
+    alert("المستوى الثاني - عمليات حسابية متوسطة");
+  }
+
+  if(level===3){
+    alert("المستوى الثالث - تحدي الرياضيات المتقدم");
+  }
+
+}
+</script>
+<!-- نافذة التحدي -->
+
+<div id="challengeModal" class="challenge-modal">
+
+  <div class="challenge-box">
+
+    <span class="close-btn" onclick="closeChallenge()">✖</span>
+
+    <h2>🎁 تحدي مُجيب</h2>
+
+    <p>اختري المستوى المناسب وابدئي التحدي</p>
+
+    <button class="level-btn" onclick="startLevel(1)">
+      🟢 المستوى الأول
+    </button>
+
+    <button class="level-btn" onclick="startLevel(2)">
+      🟡 المستوى الثاني
+    </button>
+
+    <button class="level-btn" onclick="startLevel(3)">
+      🔴 المستوى الثالث
+    </button>
+
+  </div>
+
+</div>
 </body>
 </html>
