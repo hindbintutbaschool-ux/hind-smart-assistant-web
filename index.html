@@ -240,6 +240,44 @@ body{
   display:none !important;
 }
 
+/* 🎁 أيقونة تحدي مُجيب */
+.gift-float{
+  position:fixed;
+  left:30px;
+  bottom:120px;
+  width:90px;
+  height:90px;
+  background:linear-gradient(135deg,#8a0030,#b3124a);
+  color:white;
+  border-radius:50%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-size:34px;
+  cursor:pointer;
+  z-index:9999;
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
+  animation:giftPulse 2s infinite;
+  transition:.3s;
+}
+
+.gift-float:hover{
+  transform:scale(1.1);
+}
+
+.gift-float span{
+  font-size:12px;
+  margin-top:4px;
+  font-weight:bold;
+}
+
+@keyframes giftPulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.08);}
+  100%{transform:scale(1);}
+}
+
 @media(max-width:1100px){
   .hero{padding:25px 20px 180px}
   .logo{position:relative;top:auto;left:auto;margin:auto}
@@ -250,6 +288,18 @@ body{
   .bot-frame,.service{position:relative;inset:auto;transform:none!important}
   .footer{position:relative;flex-direction:column;gap:10px}
   .footer .item{border-left:none;padding-left:0}
+
+  .gift-float{
+    width:75px;
+    height:75px;
+    font-size:28px;
+    left:18px;
+    bottom:100px;
+  }
+
+  .gift-float span{
+    font-size:11px;
+  }
 }
 </style>
 </head>
@@ -311,6 +361,12 @@ body{
 
 </section>
 
+<!-- 🎁 أيقونة تحدي مُجيب -->
+<div class="gift-float" onclick="openGiftChallenge()">
+  🎁
+  <span>تحدي مُجيب</span>
+</div>
+
 <script type="text/javascript">
 function openBot(){
   if(window.voiceflow && window.voiceflow.chat){
@@ -318,6 +374,11 @@ function openBot(){
   }else{
     alert("جاري تحميل منصة مُجيب، يرجى المحاولة بعد لحظات.");
   }
+}
+
+function openGiftChallenge() {
+  console.log("Challenge opened");
+  alert("🎯 تحدي مُجيب قادم قريباً!");
 }
 
 (function(d, t) {
