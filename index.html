@@ -187,6 +187,11 @@ body{
   font-size:17px;
   cursor:pointer;
   z-index:4;
+  transition:.3s;
+}
+
+.service:hover{
+  transform:scale(1.06);
 }
 
 .service i{
@@ -201,6 +206,35 @@ body{
 .bottom{bottom:0;left:50%;transform:translateX(-50%)}
 .left-bottom{bottom:115px;left:0}
 .left-top{top:115px;left:0}
+
+/* 🎁 تحدي مُجيب داخل دائرة الخدمات */
+.challenge{
+  top:35px;
+  left:95px;
+  width:155px;
+  height:155px;
+  background:linear-gradient(135deg,#8a0030,#b3124a);
+  color:white;
+  border:3px solid white;
+  box-shadow:0 15px 35px rgba(0,0,0,.25);
+  animation:giftPulse 2s infinite;
+  font-size:18px;
+}
+
+.challenge i{
+  font-size:56px;
+  margin-bottom:8px;
+}
+
+.challenge:hover{
+  transform:scale(1.08);
+}
+
+@keyframes giftPulse{
+  0%{box-shadow:0 0 0 0 rgba(123,8,38,.45);}
+  70%{box-shadow:0 0 0 18px rgba(123,8,38,0);}
+  100%{box-shadow:0 0 0 0 rgba(123,8,38,0);}
+}
 
 .footer{
   position:absolute;
@@ -240,44 +274,6 @@ body{
   display:none !important;
 }
 
-/* 🎁 أيقونة تحدي مُجيب */
-.gift-float{
-  position:fixed;
-  left:30px;
-  bottom:120px;
-  width:90px;
-  height:90px;
-  background:linear-gradient(135deg,#8a0030,#b3124a);
-  color:white;
-  border-radius:50%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  font-size:34px;
-  cursor:pointer;
-  z-index:9999;
-  box-shadow:0 8px 20px rgba(0,0,0,.25);
-  animation:giftPulse 2s infinite;
-  transition:.3s;
-}
-
-.gift-float:hover{
-  transform:scale(1.1);
-}
-
-.gift-float span{
-  font-size:12px;
-  margin-top:4px;
-  font-weight:bold;
-}
-
-@keyframes giftPulse{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.08);}
-  100%{transform:scale(1);}
-}
-
 @media(max-width:1100px){
   .hero{padding:25px 20px 180px}
   .logo{position:relative;top:auto;left:auto;margin:auto}
@@ -286,20 +282,13 @@ body{
   .hub{width:360px;height:auto;display:flex;flex-direction:column;gap:14px;align-items:center}
   .orbit{display:none}
   .bot-frame,.service{position:relative;inset:auto;transform:none!important}
+  .challenge{
+    width:150px;
+    height:150px;
+    order:-1;
+  }
   .footer{position:relative;flex-direction:column;gap:10px}
   .footer .item{border-left:none;padding-left:0}
-
-  .gift-float{
-    width:75px;
-    height:75px;
-    font-size:28px;
-    left:18px;
-    bottom:100px;
-  }
-
-  .gift-float span{
-    font-size:11px;
-  }
 }
 </style>
 </head>
@@ -336,6 +325,12 @@ body{
     <div class="orbit"></div>
 
     <div class="service top" onclick="openBot()"><i>📢</i>الإعلانات</div>
+
+    <div class="service challenge" onclick="openGiftChallenge()">
+      <i>🎁</i>
+      تحدي مُجيب
+    </div>
+
     <div class="service right-top" onclick="openBot()"><i>📅</i>جدول الحصص</div>
     <div class="service right-bottom" onclick="openBot()"><i>🎧</i>تواصل مع المدرسة</div>
     <div class="service bottom" onclick="openBot()"><i>☏</i>مُجيب واتساب</div>
@@ -361,12 +356,6 @@ body{
 
 </section>
 
-<!-- 🎁 أيقونة تحدي مُجيب -->
-<div class="gift-float" onclick="openGiftChallenge()">
-  🎁
-  <span>تحدي مُجيب</span>
-</div>
-
 <script type="text/javascript">
 function openBot(){
   if(window.voiceflow && window.voiceflow.chat){
@@ -377,7 +366,6 @@ function openBot(){
 }
 
 function openGiftChallenge() {
-  console.log("Challenge opened");
   alert("🎯 تحدي مُجيب قادم قريباً!");
 }
 
