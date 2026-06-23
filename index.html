@@ -282,7 +282,6 @@ body{
   display:none !important;
 }
 
-/* نافذة التحدي */
 .challenge-modal{
   display:none;
   position:fixed;
@@ -306,6 +305,16 @@ body{
 .challenge-box h2{
   color:#7b0826;
   margin-bottom:10px;
+}
+
+.student-input{
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border:2px solid #7b0826;
+  border-radius:12px;
+  font-size:18px;
+  text-align:center;
 }
 
 .level-btn,
@@ -448,7 +457,10 @@ body{
 
     <div id="levelScreen">
       <h2>🎁 تحدي مُجيب</h2>
-      <p>اختاري مستوى الرياضيات</p>
+      <p>اكتبي بياناتك ثم اختاري مستوى الرياضيات</p>
+
+      <input id="studentName" class="student-input" type="text" placeholder="اكتبي اسمك">
+      <input id="studentGrade" class="student-input" type="text" placeholder="اكتبي الصف مثال: 8/1">
 
       <button class="level-btn" onclick="startLevel(1)">🟢 المستوى الأول</button>
       <button class="level-btn" onclick="startLevel(2)">🟡 المستوى الثاني</button>
@@ -478,6 +490,9 @@ let allQuestions = [];
 let currentQuestions = [];
 let currentIndex = 0;
 let score = 0;
+let studentName = "";
+let studentGrade = "";
+let selectedLevel = "";
 
 function openBot(){
   if(window.voiceflow && window.voiceflow.chat){
@@ -509,6 +524,15 @@ async function loadQuestions() {
 }
 
 async function startLevel(level){
+  studentName = document.getElementById("studentName").value.trim();
+  studentGrade = document.getElementById("studentGrade").value.trim();
+  selectedLevel = level;
+
+  if(studentName === "" || studentGrade === ""){
+    alert("يرجى كتابة الاسم والصف أولاً");
+    return;
+  }
+
   score = 0;
   currentIndex = 0;
 
@@ -577,7 +601,24 @@ function showResult(){
   document.getElementById("resultScreen").style.display = "block";
 
   document.getElementById("finalScore").innerHTML =
+    "أحسنتِ يا <strong>" + studentName + "</strong><br>" +
     "مجموع نقاطك: <strong>" + score + "</strong> من " + (currentQuestions.length * 10);
+
+  saveResult();
+}
+
+function saveResult(){
+  const formData = new FormData();
+  formData.append("name", studentName);
+  formData.append("grade", studentGrade);
+  formData.append("level", selectedLevel);
+  formData.append("score", score);
+
+  fetch(SHEET_API_URL, {
+    method: "POST",
+    body: formData,
+    mode: "no-cors"
+  });
 }
 
 function backToLevels(){
