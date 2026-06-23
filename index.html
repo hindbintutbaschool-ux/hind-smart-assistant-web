@@ -368,7 +368,31 @@ body{
   font-weight:bold;
   color:#7b0826;
 }
+.leaderboard-box{
+  margin-top:18px;
+  background:#fff7f5;
+  border:2px solid #7b0826;
+  border-radius:16px;
+  padding:15px;
+  text-align:right;
+}
 
+.leaderboard-box h3{
+  color:#7b0826;
+  text-align:center;
+  margin:0 0 10px;
+}
+
+.leader-item{
+  font-size:17px;
+  font-weight:bold;
+  padding:7px 0;
+  border-bottom:1px solid rgba(123,8,38,.2);
+}
+
+.leader-item:last-child{
+  border-bottom:none;
+}
 @media(max-width:1100px){
   .hero{padding:25px 20px 180px}
   .logo{position:relative;top:auto;left:auto;margin:auto}
@@ -467,7 +491,10 @@ body{
       <button class="level-btn" onclick="startLevel(2)">🟡 المستوى الثاني</button>
       <button class="level-btn" onclick="startLevel(3)">🔴 المستوى الثالث</button>
     </div>
-
+<div class="leaderboard-box">
+  <h3>🏆 لوحة الشرف</h3>
+  <div id="leaderboardList">جاري تحميل لوحة الشرف...</div>
+</div>
     <div id="quizScreen" style="display:none;">
       <h2 id="questionTitle"></h2>
       <div id="answersBox"></div>
@@ -512,6 +539,8 @@ function openGiftChallenge() {
   document.getElementById("resultScreen").style.display = "none";
   document.getElementById("saveStatus").innerText = "";
   resultSaved = false;
+
+  loadLeaderboard();
 }
 
 function closeChallenge() {
@@ -631,15 +660,43 @@ function saveResult(){
     method: "POST",
     body: formData
   })
-  .then(() => {
-    document.getElementById("saveStatus").innerText = "✅ تم إرسال النتيجة للحفظ";
-  })
+ .then(() => {
+  document.getElementById("saveStatus").innerText = "✅ تم إرسال النتيجة للحفظ";
+  loadLeaderboard();
+})
   .catch(error => {
     document.getElementById("saveStatus").innerText = "⚠️ لم يتم حفظ النتيجة، راجعي إعدادات Apps Script";
     console.error("Save error:", error);
   });
 }
+async function loadLeaderboard(){
+  try{
+    const response = await fetch(SHEET_API_URL + "?action=leaders");
+    const leaders = await response.json();
 
+    const box = document.getElementById("leaderboardList");
+    box.innerHTML = "";
+
+    if(leaders.length === 0){
+      box.innerHTML = "لا توجد نتائج حتى الآن.";
+      return;
+    }
+
+    leaders.forEach((item, index) => {
+      let medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : "⭐";
+
+      box.innerHTML += `
+        <div class="leader-item">
+          ${medal} ${item.name} - ${item.score} نقطة
+        </div>
+      `;
+    });
+
+  }catch(error){
+    document.getElementById("leaderboardList").innerHTML =
+      "تعذر تحميل لوحة الشرف.";
+  }
+}
 function backToLevels(){
   document.getElementById("resultScreen").style.display = "none";
   document.getElementById("levelScreen").style.display = "block";
