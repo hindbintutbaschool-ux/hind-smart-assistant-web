@@ -362,7 +362,8 @@ body{
 }
 
 #feedback,
-#scoreBox{
+#scoreBox,
+#saveStatus{
   font-size:19px;
   font-weight:bold;
   color:#7b0826;
@@ -477,6 +478,7 @@ body{
     <div id="resultScreen" style="display:none;">
       <h2>🏆 انتهى التحدي</h2>
       <p id="finalScore"></p>
+      <p id="saveStatus"></p>
       <button class="level-btn" onclick="backToLevels()">العودة للمستويات</button>
     </div>
 
@@ -493,6 +495,7 @@ let score = 0;
 let studentName = "";
 let studentGrade = "";
 let selectedLevel = "";
+let resultSaved = false;
 
 function openBot(){
   if(window.voiceflow && window.voiceflow.chat){
@@ -507,6 +510,8 @@ function openGiftChallenge() {
   document.getElementById("levelScreen").style.display = "block";
   document.getElementById("quizScreen").style.display = "none";
   document.getElementById("resultScreen").style.display = "none";
+  document.getElementById("saveStatus").innerText = "";
+  resultSaved = false;
 }
 
 function closeChallenge() {
@@ -535,6 +540,7 @@ async function startLevel(level){
 
   score = 0;
   currentIndex = 0;
+  resultSaved = false;
 
   if(allQuestions.length === 0){
     await loadQuestions();
@@ -602,12 +608,19 @@ function showResult(){
 
   document.getElementById("finalScore").innerHTML =
     "أحسنتِ يا <strong>" + studentName + "</strong><br>" +
+    "الصف: <strong>" + studentGrade + "</strong><br>" +
+    "المستوى: <strong>" + selectedLevel + "</strong><br>" +
     "مجموع نقاطك: <strong>" + score + "</strong> من " + (currentQuestions.length * 10);
 
   saveResult();
 }
 
 function saveResult(){
+  if(resultSaved) return;
+  resultSaved = true;
+
+  document.getElementById("saveStatus").innerText = "جاري حفظ النتيجة...";
+
   const formData = new FormData();
   formData.append("name", studentName);
   formData.append("grade", studentGrade);
@@ -616,8 +629,14 @@ function saveResult(){
 
   fetch(SHEET_API_URL, {
     method: "POST",
-    body: formData,
-    mode: "no-cors"
+    body: formData
+  })
+  .then(() => {
+    document.getElementById("saveStatus").innerText = "✅ تم إرسال النتيجة للحفظ";
+  })
+  .catch(error => {
+    document.getElementById("saveStatus").innerText = "⚠️ لم يتم حفظ النتيجة، راجعي إعدادات Apps Script";
+    console.error("Save error:", error);
   });
 }
 
